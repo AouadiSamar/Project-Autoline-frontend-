@@ -1,23 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { IoMdMenu } from "react-icons/io";
 import { motion } from "framer-motion";
 import logo from "../../assets/autolink.png";
-import axios from "axios";
 
 const Navbar = () => {
-  const [NavbarMenu, setNavbarMenu] = useState([]);
-
-  useEffect(() => {
-    const fetchMenu = async () => {
-      try {
-        const res = await axios.get("http://127.0.0.1:8000/api/pages/");
-        setNavbarMenu(res.data);
-      } catch (err) {
-        console.error("Error fetching menu:", err);
-      }
-    };
-    fetchMenu();
-  }, []);
+  const NavbarLinks = [
+    { title: "الصفحة الرئيسية", url: "#" },
+    { title: "سوق السيارات", url: "#" },
+    { title: "الميكانيكيون", url: "#" },
+    { title: "مدارس تعليم السياقة", url: "#" },
+    { title: "قطع الغيار والإكسسوارات", url: "#" },
+    { title: "تشخيص الأعطال بالذكاء الاصطناعي", url: "#" },
+    { title: "استئجار سيارة", url: "#" },
+    { title: "المدونة", url: "#" },
+    { title: "اتصل بنا", url: "#" },
+  ];
 
   return (
     <nav className="relative z-20" dir="rtl">
@@ -30,7 +27,7 @@ const Navbar = () => {
         <div>
           <img
             src={logo}
-            alt="OmniSavoir Logo"
+            alt="Autolink Logo"
             className="w-48 h-auto"
             style={{ maxWidth: "200px" }}
           />
@@ -39,19 +36,13 @@ const Navbar = () => {
         {/* Menu */}
         <div className="hidden lg:block">
           <ul className="flex items-center gap-3">
-            {NavbarMenu.map((menu, idx) => (
+            {NavbarLinks.map((menu, idx) => (
               <li key={idx}>
                 <a
-                  href={menu.url}
+                  href={menu.url} // maintenant défini
                   className="inline-block py-2 px-3 relative group"
-                  style={{ color: "#003366" }} // bleu marine
+                  style={{ color: "#003366" }}
                 >
-                  <div
-                    className="w-2 h-2 absolute mt-4 rounded-full left-1/2 -translate-x-1/2 top-1/2 bottom-0 hidden group-hover:block"
-                    style={{ backgroundColor: "#5AAAD8" }} 
-                      
-
-                  ></div>
                   {menu.title}
                 </a>
               </li>
@@ -62,15 +53,8 @@ const Navbar = () => {
               className="primary-btn py-2 px-5 rounded-lg font-semibold shadow"
               style={{
                 backgroundColor: "#5AAAD8",
-
                 color: "#FFFFFF",
               }}
-              onMouseOver={(e) =>
-                (e.target.style.backgroundColor = "#5AAAD8")
-              }
-              onMouseOut={(e) =>
-                (e.target.style.backgroundColor = "#5AAAD8")
-              }
             >
               تسجيل الدخول
             </button>
