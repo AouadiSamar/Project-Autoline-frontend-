@@ -1,9 +1,16 @@
 import React, { useState, useMemo } from "react";
-import { Search } from "lucide-react";
-import { BadgeCheck, ShoppingCart, X } from "lucide-react";
-
+import { Search, BadgeCheck, ShoppingCart, X } from "lucide-react";
 
 const Moteur = () => {
+  const COLORS = {
+    BG_SECTION: "#F3F4F6",
+    BG_CARD: "#FFFFFF",
+    TEXT_DARK: "#34495E",
+    ACCENT_CTA: "#7BC0E3",
+    HOVER_CTA: "#5AAAD8",
+    TEXT_SECONDARY: "#6B7280",
+  };
+
   const initialProducts = [
     {
       id: 1,
@@ -13,7 +20,8 @@ const Moteur = () => {
       price: 29.99,
       image: "https://via.placeholder.com/300x200?text=Filtre+huile",
       stock: 12,
-      description: "Filtre à huile haute performance compatible avec plusieurs moteurs populaires.",
+      description:
+        "Filtre à huile haute performance compatible avec plusieurs moteurs populaires.",
     },
     {
       id: 2,
@@ -63,11 +71,16 @@ const Moteur = () => {
   const [sort, setSort] = useState("popular");
   const [cart, setCart] = useState([]);
   const [selected, setSelected] = useState(null);
-  const categories = useMemo(() => ["Tous", ...new Set(products.map((p) => p.category))], [products]);
+  const categories = useMemo(
+    () => ["Tous", ...new Set(products.map((p) => p.category))],
+    [products]
+  );
 
   const filtered = useMemo(() => {
     let res = products.filter((p) => {
-      const matchQuery = `${p.title} ${p.brand} ${p.description}`.toLowerCase().includes(query.toLowerCase());
+      const matchQuery = `${p.title} ${p.brand} ${p.description}`
+        .toLowerCase()
+        .includes(query.toLowerCase());
       const matchCategory = category === "Tous" ? true : p.category === category;
       return matchQuery && matchCategory;
     });
@@ -95,6 +108,19 @@ const Moteur = () => {
     return cart.reduce((s, i) => s + i.price * i.qty, 0).toFixed(2);
   }
 
+  // Fonction générique pour boutons CTA
+  const CTAButton = ({ children, onClick, className = "" }) => (
+    <button
+      onClick={onClick}
+      className={`transition-colors duration-300 font-semibold rounded py-2 px-3 ${className}`}
+      style={{ backgroundColor: COLORS.ACCENT_CTA, color: COLORS.TEXT_DARK }}
+      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLORS.HOVER_CTA)}
+      onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLORS.ACCENT_CTA)}
+    >
+      {children}
+    </button>
+  );
+
   return (
     <div className="p-4 max-w-7xl mx-auto">
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
@@ -115,7 +141,11 @@ const Moteur = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <select value={category} onChange={(e) => setCategory(e.target.value)} className="py-2 px-3 border rounded">
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="py-2 px-3 border rounded"
+            >
               {categories.map((c) => (
                 <option key={c} value={c}>
                   {c}
@@ -123,20 +153,20 @@ const Moteur = () => {
               ))}
             </select>
 
-            <select value={sort} onChange={(e) => setSort(e.target.value)} className="py-2 px-3 border rounded">
+            <select
+              value={sort}
+              onChange={(e) => setSort(e.target.value)}
+              className="py-2 px-3 border rounded"
+            >
               <option value="popular">Popularité</option>
               <option value="price_asc">Prix ↑</option>
               <option value="price_desc">Prix ↓</option>
               <option value="stock">Stock disponible</option>
             </select>
 
-            <button
-              onClick={() => setSelected("cart")}
-              className="flex items-center gap-2 py-2 px-3 border rounded hover:shadow"
-              title="Voir panier"
-            >
+            <CTAButton onClick={() => setSelected("cart")}>
               <ShoppingCart size={18} /> <span>{cart.length}</span>
-            </button>
+            </CTAButton>
           </div>
         </div>
       </header>
@@ -147,13 +177,18 @@ const Moteur = () => {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {filtered.map((p) => (
-              <article key={p.id} className="border rounded-lg overflow-hidden shadow-sm flex flex-col">
+              <article
+                key={p.id}
+                className="border rounded-lg overflow-hidden shadow-sm flex flex-col"
+              >
                 <img src={p.image} alt={p.title} className="h-44 w-full object-cover" />
                 <div className="p-3 flex-1 flex flex-col">
                   <div className="flex justify-between items-start">
                     <div>
                       <h2 className="font-semibold">{p.title}</h2>
-                      <p className="text-sm text-gray-600">{p.brand} • {p.category}</p>
+                      <p className="text-sm text-gray-600">
+                        {p.brand} • {p.category}
+                      </p>
                     </div>
                     <div className="text-right">
                       <div className="font-bold">{p.price} TND</div>
@@ -164,13 +199,13 @@ const Moteur = () => {
                   <p className="text-sm text-gray-700 mt-2 line-clamp-3">{p.description}</p>
 
                   <div className="mt-4 flex items-center gap-2">
+                    <CTAButton onClick={() => handleAddToCart(p)}>Ajouter au panier</CTAButton>
                     <button
-                      onClick={() => handleAddToCart(p)}
-                      className="flex-1 py-2 rounded bg-slate-900 text-white hover:opacity-95"
+                      onClick={() => setSelected(p)}
+                      className="py-2 px-3 border rounded"
                     >
-                      Ajouter au panier
+                      Détails
                     </button>
-                    <button onClick={() => setSelected(p)} className="py-2 px-3 border rounded">Détails</button>
                   </div>
                 </div>
               </article>
@@ -184,7 +219,9 @@ const Moteur = () => {
         <div className="fixed inset-0 bg-black/40 z-40 flex items-center justify-center p-4">
           <div className="bg-white w-full max-w-2xl rounded-lg shadow-lg overflow-hidden">
             <div className="flex items-center justify-between p-4 border-b">
-              <h3 className="font-semibold">{selected === "cart" ? "Panier" : selected.title}</h3>
+              <h3 className="font-semibold">
+                {selected === "cart" ? "Panier" : selected.title}
+              </h3>
               <button onClick={() => setSelected(null)} className="p-2">
                 <X />
               </button>
@@ -198,39 +235,73 @@ const Moteur = () => {
                   ) : (
                     <div className="space-y-3">
                       {cart.map((i) => (
-                        <div key={i.id} className="flex items-center justify-between gap-3 border p-3 rounded">
+                        <div
+                          key={i.id}
+                          className="flex items-center justify-between gap-3 border p-3 rounded"
+                        >
                           <div className="flex items-center gap-3">
-                            <img src={i.image} alt={i.title} className="w-16 h-12 object-cover rounded" />
+                            <img
+                              src={i.image}
+                              alt={i.title}
+                              className="w-16 h-12 object-cover rounded"
+                            />
                             <div>
                               <div className="font-medium">{i.title}</div>
-                              <div className="text-sm text-gray-500">{i.qty} × {i.price} TND</div>
+                              <div className="text-sm text-gray-500">
+                                {i.qty} × {i.price} TND
+                              </div>
                             </div>
                           </div>
                           <div className="flex items-center gap-2">
-                            <div className="font-semibold">{(i.price * i.qty).toFixed(2)} TND</div>
-                            <button onClick={() => handleRemoveFromCart(i.id)} className="py-1 px-2 border rounded">Supprimer</button>
+                            <div className="font-semibold">
+                              {(i.price * i.qty).toFixed(2)} TND
+                            </div>
+                            <button
+                              onClick={() => handleRemoveFromCart(i.id)}
+                              className="py-1 px-2 border rounded"
+                            >
+                              Supprimer
+                            </button>
                           </div>
                         </div>
                       ))}
 
                       <div className="flex justify-between items-center mt-4">
                         <div className="font-bold">Total: {totalCart()} TND</div>
-                        <button className="py-2 px-4 rounded bg-green-600 text-white">Passer la commande</button>
+                        <CTAButton>Passer la commande</CTAButton>
                       </div>
                     </div>
                   )}
                 </div>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <img src={selected.image} alt={selected.title} className="w-full h-48 object-cover rounded" />
+                  <img
+                    src={selected.image}
+                    alt={selected.title}
+                    className="w-full h-48 object-cover rounded"
+                  />
                   <div>
                     <h4 className="font-semibold text-lg">{selected.title}</h4>
                     <p className="text-sm text-gray-600">Marque: {selected.brand}</p>
                     <p className="mt-2">{selected.description}</p>
-                    <div className="mt-4">Prix: <span className="font-bold">{selected.price} TND</span></div>
+                    <div className="mt-4">
+                      Prix: <span className="font-bold">{selected.price} TND</span>
+                    </div>
                     <div className="mt-4 flex gap-2">
-                      <button onClick={() => { handleAddToCart(selected); setSelected(null); }} className="py-2 px-3 rounded bg-slate-900 text-white">Ajouter au panier</button>
-                      <button onClick={() => setSelected(null)} className="py-2 px-3 border rounded">Fermer</button>
+                      <CTAButton
+                        onClick={() => {
+                          handleAddToCart(selected);
+                          setSelected(null);
+                        }}
+                      >
+                        Ajouter au panier
+                      </CTAButton>
+                      <button
+                        onClick={() => setSelected(null)}
+                        className="py-2 px-3 border rounded"
+                      >
+                        Fermer
+                      </button>
                     </div>
                   </div>
                 </div>
