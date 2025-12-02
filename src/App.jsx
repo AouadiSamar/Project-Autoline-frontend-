@@ -10,15 +10,15 @@ import ContactLogin from "./pages/ContactLogin";
 
 import Marketplace from "./pages/marketplace";
 import Login from "./pages/login";
+import Register from "./pages/register";
 import Mechanics from "./pages/mechanics";
 import Moteur from "./pages/moteur";
 
 
 const AppContent = () => {
   const location = useLocation();
-
-  // Pages where the navbar should NOT appear
-  const hideNavbarRoutes = ["/"]; // page login
+const hideNavbarRoutes = ["/", "/register"]; // page login et register
+  
 
   return (
     <>
@@ -34,7 +34,7 @@ const AppContent = () => {
         <Route path="/marketplace" element={<Marketplace />} />
         <Route path="/mechanics" element={<Mechanics />} />
         <Route path="/moteur" element={<Moteur />} />
-
+        <Route path="/register" element={<Register />} />
       </Routes>
     </>
   );
