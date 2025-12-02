@@ -11,6 +11,8 @@ import ContactLogin from "./pages/ContactLogin";
 import Marketplace from "./pages/marketplace";
 import Login from "./pages/login";
 import Mechanics from "./pages/mechanics";
+import Moteur from "./pages/moteur";
+
 
 const AppContent = () => {
   const location = useLocation();
@@ -31,6 +33,8 @@ const AppContent = () => {
         <Route path="/ContactLogin" element={<ContactLogin />} />
         <Route path="/marketplace" element={<Marketplace />} />
         <Route path="/mechanics" element={<Mechanics />} />
+        <Route path="/moteur" element={<Moteur />} />
+
       </Routes>
     </>
   );
