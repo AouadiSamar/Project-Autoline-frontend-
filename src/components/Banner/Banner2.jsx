@@ -29,7 +29,7 @@ const Banner2 = () => {
           <div className="text-center md:text-right space-y-4 lg:max-w-[450px] md:ml-auto">
             
             <h1 className={`text-4xl font-bold !leading-snug ${textDarkClass}`}>
-              انضم إلى مجتمع AutoLink وابدأ رحلتك في عالم السيارات
+              انضم إلى مجتمع AutoZen وابدأ رحلتك في عالم السيارات
             </h1>
             
             {/* Le texte du paragraphe est également dans la couleur foncée */}

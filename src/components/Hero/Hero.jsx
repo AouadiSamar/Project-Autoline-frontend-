@@ -75,7 +75,7 @@ const Hero = () => (
   <section dir="rtl" className={`py-20`} style={{ backgroundColor: COLORS.BG_SECTION }}>
     <div className="container mx-auto text-center mb-12">
       <h1 className="text-4xl lg:text-5xl font-bold mb-4" style={{ color: COLORS.TEXT_DARK }}>
-        اكتشف خدمات <span style={{ color: COLORS.ACCENT_CTA }}>AutoLink</span> المتكاملة
+        اكتشف خدمات <span style={{ color: COLORS.ACCENT_CTA }}>AutoZen</span> المتكاملة
       </h1>
       <p className="text-lg" style={{ color: COLORS.TEXT_SECONDARY }}>
         كل ما تحتاجه في مكان واحد: ميكانيكيون، سيارات للإيجار، سيارات للشراء وقطع الغيار.

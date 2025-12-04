@@ -41,7 +41,7 @@ const Navbar = () => {
         <div>
           <img
             src={logo}
-            alt="Autolink Logo"
+            alt="AutoZen Logo"
             className="w-48 h-auto"
             style={{ maxWidth: "200px" }}
           />
